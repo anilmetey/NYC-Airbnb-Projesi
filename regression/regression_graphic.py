@@ -13,30 +13,49 @@ def plot_regression_results():
     model = HousePriceRegressionModel()
     model.train()
     
-    y_test = model.y_test
-    y_pred = model.y_pred
+    # ÖNEMLİ: y_test ve y_pred log dönüşümlü, gerçek değerler için _actual kullan!
+    y_test = model.y_test_actual  # Gerçek fiyatlar ($)
+    y_pred = model.y_pred_actual  # Tahmin edilen fiyatlar ($)
+    
+    # Metrikleri al
+    metrics = model.get_metrics()
+    r2 = metrics['r2']
+    rmse = metrics['rmse']
+    mae = metrics['mae']
     
     plt.figure(figsize=(10, 6))
-    plt.scatter(y_test, y_pred, alpha=0.5, color='blue')
+    plt.scatter(y_test, y_pred, alpha=0.4, color='forestgreen', s=20)
     
     # Mükemmel tahmin doğrusu (y=x)
     max_val = max(max(y_test), max(y_pred))
     min_val = min(min(y_test), min(y_pred))
-    plt.plot([min_val, max_val], [min_val, max_val], 'r--', lw=2)
+    plt.plot([min_val, max_val], [min_val, max_val], 'r--', lw=2, label='İdeal Tahmin (y=x)')
     
-    plt.title('NYC Airbnb Fiyat Tahmini: Gerçek vs Tahmin')
+    # Başlığa metrikleri ekle
+    plt.title(f'NYC Airbnb Fiyat Tahmini: Gerçek vs Tahmin\nR² = {r2:.4f} | MAE = ${mae:.2f} | RMSE = ${rmse:.2f}')
     plt.xlabel('Gerçek Fiyatlar ($)')
     plt.ylabel('Tahmin Edilen Fiyatlar ($)')
-    plt.grid(True)
+    plt.legend()
+    plt.grid(True, alpha=0.3)
     plt.tight_layout()
     
-    # Grafiği dosyaya da kaydedelim
+    # Grafiği dosyaya kaydet
     save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'regression_result.png')
-    plt.savefig(save_path)
-    print(f"Grafik dosyaya kaydedildi: {save_path}")
+    plt.savefig(save_path, dpi=150)
+    print(f"✅ Grafik dosyaya kaydedildi: {save_path}")
     
-    print("Grafik çiziliyor...")
+    # Sonuçları yazdır
+    print("\n" + "="*50)
+    print("📊 REGRESYON SONUÇLARI")
+    print("="*50)
+    print(f"R² Score: {r2:.4f} ({r2*100:.1f}% açıklayıcılık)")
+    print(f"MAE: ${mae:.2f} (Ortalama hata)")
+    print(f"RMSE: ${rmse:.2f} (Karesel hata)")
+    print("="*50)
+    
+    print("\nGrafik çiziliyor...")
     plt.show()
 
 if __name__ == "__main__":
     plot_regression_results()
+

@@ -1,3 +1,5 @@
+Anıl Mete Yıldız
+
 # NYC Airbnb Veri Analizi ve Modelleme Projesi
 
 Bu proje, New York City (NYC) Airbnb verilerini (2019) kullanarak çeşitli makine öğrenmesi tekniklerini (Sınıflandırma, Kümeleme ve Regresyon) uygulamayı ve sonuçları karşılaştırmayı hedefler.
